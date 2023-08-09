@@ -80,8 +80,6 @@ class CountriesViewModel constructor(
                 carSide = country.carSide,
                 currencies = country.currencies,
                 coatOfArms = mutableStateOf(coatOfArmsBitmap),
-                flagURL = country.flagURL,
-                coatOfArmsURL = country.coatOfArmsURL
             )
         }
     }

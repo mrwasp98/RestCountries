@@ -18,9 +18,7 @@ data class CountryInfoView(
     val carSide: String?,
     val currencies: List<String> = listOf(),
     var flag: Bitmap?,
-    var flagURL: String?,
     var coatOfArms: MutableState<Bitmap?>,
-    var coatOfArmsURL: String?,
 ) {
     companion object {
         private val propertyNamesMap = mapOf(
