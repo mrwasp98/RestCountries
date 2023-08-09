@@ -2,13 +2,24 @@ package com.example.myapplication.ui.view
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -19,10 +30,10 @@ import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import com.example.myapplication.model.CountryInfoView
-import com.example.myapplication.model.CountryInfoView.Companion.getBeautifiedPropertyName
-import com.example.myapplication.model.CountryInfoView.Companion.getPropertyPosition
-import com.example.myapplication.model.CountryInfoView.Companion.getPropertyValueAsString
+import com.example.myapplication.data.model.CountryInfoView
+import com.example.myapplication.data.model.CountryInfoView.Companion.getBeautifiedPropertyName
+import com.example.myapplication.data.model.CountryInfoView.Companion.getPropertyPosition
+import com.example.myapplication.data.model.CountryInfoView.Companion.getPropertyValueAsString
 import com.example.myapplication.ui.view.composables.CountryDetailRow
 import com.example.myapplication.ui.view.composables.Loader
 import com.example.myapplication.ui.view.composables.ToggleButtonRow
@@ -37,7 +48,7 @@ fun CountryScreen(navController: NavController, countryId: String?, viewModel: C
     val country = viewModel.countriesInfoView.value.first { c -> c.commonName == countryId }
     val state = rememberCollapsingToolbarScaffoldState()
     val switchingScrollValue = 0.006f
-    var selectedButton = remember { mutableStateOf(0) }
+    val selectedButton = remember { mutableStateOf(0) }
 
     CollapsingToolbarScaffold(
         modifier = Modifier,
@@ -59,7 +70,7 @@ fun CountryScreen(navController: NavController, countryId: String?, viewModel: C
                     .background(color = MaterialTheme.colorScheme.primary)
             )
             Image(
-                bitmap = country.flag.value!!.asImageBitmap(),
+                bitmap = country.flag!!.asImageBitmap(),
                 contentDescription = null,
                 modifier = Modifier.fillMaxSize(),
                 contentScale = ContentScale.Crop, alpha = if (textSize.value == 18f) 0f else 1f
@@ -138,7 +149,8 @@ private fun getData(country: CountryInfoView): List<Pair<String,String>> {
     val propertiesArray = country.javaClass.kotlin.declaredMemberProperties
         .filter { property ->
             val clazz = property.returnType.classifier
-            clazz != MutableState::class && clazz != Boolean::class
+            val propName = property.name
+            clazz != Boolean::class && !propName.contains("flag") && !propName.contains("coat")
         }
         .sortedWith(
             compareBy {

@@ -19,10 +19,13 @@ import com.example.myapplication.ui.view.ContinentsScreen
 import com.example.myapplication.ui.view.CountriesScreen
 import com.example.myapplication.ui.view.CountryScreen
 import com.example.myapplication.ui.viewmodel.CountriesViewModel
+import com.example.myapplication.ui.viewmodel.ViewModelFactory
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
-        val viewModel : CountriesViewModel by viewModels()
+        val viewModel : CountriesViewModel by viewModels {
+            ViewModelFactory((application as BaseApplication).repository)
+        }
         viewModel.fetchCountries()
         super.onCreate(savedInstanceState)
         setContent {

@@ -1,8 +1,7 @@
-package com.example.myapplication.model
+package com.example.myapplication.data.model
 
 import android.graphics.Bitmap
 import androidx.compose.runtime.MutableState
-import com.example.myapplication.webservice.pojo.info.*
 
 data class CountryInfoView(
     var commonName: String,
@@ -18,8 +17,10 @@ data class CountryInfoView(
     val timezones: List<String>?,
     val carSide: String?,
     val currencies: List<String> = listOf(),
-    var flag: MutableState<Bitmap?>,
+    var flag: Bitmap?,
+    var flagURL: String?,
     var coatOfArms: MutableState<Bitmap?>,
+    var coatOfArmsURL: String?,
 ) {
     companion object {
         private val propertyNamesMap = mapOf(
